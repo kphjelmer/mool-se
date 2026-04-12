@@ -1,0 +1,1150 @@
+/*
+Theme Name: Twenty Twenty-Four Child (Mool)
+Theme URI: https://mool.se/
+Description: Child theme för Twenty Twenty-Four. Innehåller Mools egna CSS/JS-anpassningar.
+Author: Karl Petter
+Template: twentytwentyfour
+Version: 1.0.0
+Text Domain: twentytwentyfour-child
+*/
+
+
+/* ================================
+   Elementor – Textredigerare: global bas
+   ================================ */
+
+/* Normal styckesättning i alla text-widgets */
+.elementor .elementor-widget-text-editor .elementor-widget-container {
+  white-space: normal;            /* standard: <p> styr radbrytning */
+  line-height: 1.4;               /* läsbar radavstånd */
+}
+
+/* Luft mellan stycken + ingen extra luft på sista */
+.elementor .elementor-widget-text-editor .elementor-widget-container p {
+  margin: 0 0 1rem !important;
+}
+.elementor .elementor-widget-text-editor .elementor-widget-container > :last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ================================
+   Opt-in: tolka vanliga radslut som <br>
+   Lägg klassen "keep-breaks" på valfri text-widget
+   ================================ */
+.elementor .elementor-widget-text-editor.keep-breaks .elementor-widget-container {
+  white-space: pre-line;          /* behåll radslut i just denna widget */
+}
+
+/* ================================
+   Listor i text-widgets
+   ================================ */
+
+/* Visa punkter/nummer, indrag och rytm */
+.elementor .elementor-widget-text-editor .elementor-widget-container ul,
+.elementor .elementor-widget-text-editor .elementor-widget-container ol {
+  list-style: initial !important;       /* återställ om något nollat */
+  list-style-position: outside !important;
+  padding-left: 1.25rem !important;     /* plats för punkter */
+  margin: 0 0 1rem 0 !important;        /* samma rytm som stycken */
+}
+
+/* Typ av markering */
+.elementor .elementor-widget-text-editor .elementor-widget-container ul {
+  list-style-type: disc !important;
+}
+.elementor .elementor-widget-text-editor .elementor-widget-container ol {
+  list-style-type: decimal !important;
+}
+
+/* Säkerställ att LI verkligen beter sig som listpunkter */
+.elementor .elementor-widget-text-editor .elementor-widget-container li {
+  display: list-item !important;
+  margin: 0 0 0.25rem 0 !important;
+}
+
+/* Punkternas färg = textfärgen */
+.elementor .elementor-widget-text-editor .elementor-widget-container li::marker {
+  color: currentColor;
+}
+
+/* ================================
+   Fetstil i text-widgets
+   ================================ */
+.elementor .elementor-widget-text-editor .elementor-widget-container b,
+.elementor .elementor-widget-text-editor .elementor-widget-container strong {
+  font-weight: 700 !important;         /* tydlig strong/b */
+}
+
+
+
+/* göm felmeddelande woocom*/
+.woocommerce-message, .woocommerce-error, .woocommerce-info {
+    display: none !important;
+}
+
+
+/* GÖM PÅ DESKTOP OCH TABLET */
+.lifekit-sticky-cta {
+  display: none;
+}
+
+/* GEMENSAM DESIGN FÖR KNAPP OCH TEXT */
+.lifekit-sticky-cta a {
+  display: inline-block;
+  background-color: #ffc600;
+  color: #ffffff !important;
+  font-weight: 500;
+  padding: 12px 24px;
+  font-size: 15px;
+  border-radius: 15px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.lifekit-sticky-cta a:hover,
+.lifekit-sticky-cta a:focus,
+.lifekit-sticky-cta a:active {
+  background-color: #ffffff !important;
+  color: #ffc600 !important;
+  border-color: #ffc600 !important;
+  outline: none;
+}
+
+.lifekit-sticky-cta p {
+  font-size: 13px;
+  line-height: 1.1em;
+  margin-top: 3px;
+  margin-bottom: 0px;
+  color: #3A001E;
+  padding: 8px 8px 0px;
+  display: inline-block;
+}
+
+
+/* MOBIL: POSITION OCH FIXERING */
+@media (max-width: 768px) {
+  .lifekit-sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 0 -10px 0;
+    background: transparent;
+    text-align: center;
+    padding: 12px 16px 5px;
+    z-index: 9999;
+    font-family: inherit;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.85); /* vit med 85 % opacitet */
+    min-height: 80px;
+    max-height: 120px;
+    overflow: hidden;
+  }
+}
+
+.lifekit-sticky-cta.initially-hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .lifekit-sticky-cta {
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0);
+  }
+
+  .lifekit-sticky-cta.hidden-on-scroll {
+    transform: translateY(100%);
+  }
+}
+
+
+/* Amelia style*/
+
+
+/* --- DÖLJ ALLT ONÖDIGT --- */
+
+/* priset */
+#amelia-container .am-fcis__header-text,
+#amelia-container .am-service-price { display:none !important; }
+
+/* meta/ikonrad under knappen */
+#amelia-container .am-fcis__header-bottom,
+#amelia-container .am-service-info,
+#amelia-container .am-service-category { display:none !important; }
+
+/* "Anställda"-sektionen (rubrik, linje, innehåll, flikar) */
+#amelia-container .am-fcis__section-title,
+#amelia-container .am-fcis__info-tab,
+#amelia-container .am-fcis__employees,
+#amelia-container .am-fcis__info { display:none !important; }
+
+/* ta bort kortets vita bakgrund/skugga/padding */
+#amelia-container .am-cat__wrapper,
+#amelia-container .am-cat__content,
+#amelia-container .am-fcis__content {
+  background:transparent !important;
+  box-shadow:none !important;
+  border:none !important;
+  padding:0 !important;
+}
+
+/* behåll headern (där knappen sitter) och centrera */
+#amelia-container .am-fcis__header{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  background:transparent !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+#amelia-container .am-fcis__header-action{ margin:0 auto !important; }
+
+/* --- KNAPP I MOOL-STIL (samma look som "Klicka här") --- */
+#amelia-container .am-fcis__header-action .am-button,
+#amelia-container .am-fcis__header-action .am-service-book-btn,
+#amelia-container .am-fc__btn{
+  background:#FFC600 !important;
+  color:#ffffff !important;
+  border:none !important;
+  border-radius:32px !important;     /* kapsel-form */
+  font-family:"Nunito Sans",sans-serif !important;
+  font-weight:500 !important;
+  letter-spacing:2px !important;
+  font-size:18px !important;
+  padding:14px 40px !important;
+  cursor:pointer !important;
+  box-shadow:none !important;
+  text-transform:none !important;
+  transition:all .25s ease-in-out !important;
+}
+
+/* hover-invertering */
+#amelia-container .am-fcis__header-action .am-button:hover,
+#amelia-container .am-fcis__header-action .am-service-book-btn:hover,
+#amelia-container .am-fc__btn:hover{
+  background:#ffffff !important;
+  color:#FFC600 !important;
+  border:1px solid #FFC600 !important;
+}
+
+/* sätt interna färgvariabler ifall blått läcker in någonstans */
+#amelia-container{
+  --am-c-primary:#FFC600 !important;
+  --am-c-primary-contrast:#2e2a27 !important;
+}
+
+
+
+/* Ladda fonten om den inte redan är globalt */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap');/* TOC-länkens layout */
+
+
+
+/* Visa "Förnya nu"-knappen direkt – behåll global Mool-stil och vit text */
+body.woocommerce-account .woocommerce-MyAccount-content a.woocommerce-button.button.subscription_renewal_early.wp-element-button {
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  display: inline-block !important;
+  color: #ffffff !important; /* vit text */
+  background-color: #FFC600 !important; /* Mool-gul bakgrund */
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* Hover-effekt för "Förnya nu"-knappen */
+body.woocommerce-account .woocommerce-MyAccount-content a.woocommerce-button.button.subscription_renewal_early.wp-element-button:hover {
+  background-color: #ffffff !important;
+  color: #FFC600 !important;
+  border: 1px solid #FFC600 !important;
+}
+
+/* Slå ut ev. hover-regler som döljer knappar i rader */
+body.woocommerce-account .woocommerce-MyAccount-content .subscription:hover .actions .button,
+body.woocommerce-account .woocommerce-MyAccount-content .subscription .actions .button {
+  opacity: 1 !important;
+}
+
+
+/* lifekit-toggla text – hel och fungerande version */
+
+.toggle-text-block {
+  font-size: inherit;
+  line-height: 1.7;
+  max-width: 100%;
+  margin-bottom: 2em;
+}
+
+/* Inledande synlig text */
+.toggle-intro {
+  margin-bottom: 1em;
+}
+
+/* Text som döljs/visas */
+.toggle-text-hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.6s ease, opacity 0.6s ease;
+}
+
+.toggle-text-hidden.expanded {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* Knapp – rund, gul, med ikon/text */
+.toggle-text-block .toggle-button {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background-color: #FFC600 !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+  cursor: pointer !important;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border 0.3s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin-top: 0.5em !important;
+}
+
+/* Hovereffekt på knappen */
+.toggle-text-block .toggle-button:hover {
+  background-color: #ffffff !important;
+  color: #FFC600 !important;
+  border: 1px solid #FFC600 !important;
+}
+
+/* Om du någon gång använder ikon istället för +/− */
+.toggle-text-block .toggle-button svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.toggle-text-block .toggle-button svg.icon-up {
+  transform: rotate(180deg);
+}
+
+
+/* rubrik vid punktlistan orderbekräftelsesidan */
+.woocommerce-order-received .mool-start-block h3 {
+  font-size: 22px !important;
+  color: #663c48 !important;
+}
+
+/* ingen ikon på produltbild */
+.woocommerce-product-gallery__trigger {
+  display: none !important;
+}
+
+/* vit bg på orderbekräftelsesidan */
+body.woocommerce-order-received .woocommerce-order {
+  background-color: #ffffff;
+  padding: 40px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Se till att barnen är transparenta för att inte skriva över den vita bg:n */
+body.woocommerce-order-received .woocommerce-order * {
+  background-color: transparent !important;
+}
+
+
+
+/* Dölj Elementor-rubrik på orderbekräftelsesidan */
+body.woocommerce-order-received h1.elementor-heading-title {
+  display: none !important;
+}
+
+
+/* Gemensam rubrikstil för h2 och h3 på bekräftelsesidan */
+body.woocommerce-order-received h2,
+body.woocommerce-order-received h3 {
+  font-size: 35px !important;
+  font-weight: 300;
+  font-family: 'Nunito', sans-serif !important;
+  color: #6d3a47;
+  line-height: 1.5;
+  margin: 2em 0 1em;
+}
+
+/* Tack-meddelande med yogisk stil + Nunito för hela sidan */
+body.woocommerce-order-received .woocommerce-notice--success.woocommerce-thankyou-order-received {
+  font-size: 35px !important;
+  font-weight: 600;
+  color: #6d3a47;
+  margin: 0 0 2em 0;
+  position: relative;
+  line-height: 1.5;
+  font-family: 'Nunito', sans-serif !important;
+}
+
+
+/* Style av meddelande i kassan */
+
+#custom-loading-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 2147483647;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-family: 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#custom-loading-message.show {
+    display: flex;
+    opacity: 1;
+}
+
+#custom-loading-message p {
+    transition: opacity 0.3s ease;
+}
+
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+
+/* Tvinga vit text på aktiva länkar i "Mitt konto"-menyn */
+.woocommerce .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link.is-active > a {
+    color: #ffffff !important;
+}
+
+
+/* beställning"-sidan  större text i toppen på sin order*/
+.woocommerce-order-overview li {
+    font-size: 11px !important;
+}
+
+
+/* Använd Nunito för allt på "Tack för din beställning"-sidan */
+body.woocommerce-order-received {
+    font-family: "Nunito", sans-serif !important;
+}
+
+
+/* ta bort två texter med länkar i bekräftelse-sidan  */
+/* Dölj båda informationsstyckena efter köp */
+.woocommerce-order p:has(a[href*="my-membership-content"]),
+.woocommerce-order p:has(a[href*="view-subscription"]) {
+    display: none !important;
+}
+
+
+/* 🌕 Mool-stil för alla WooCommerce-knappar */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce .woocommerce-button,
+.woocommerce .woocommerce-Button,
+.woocommerce .wp-element-button,
+.woocommerce .button.cancel,
+.woocommerce .button.pay,
+.woocommerce .button.view,
+.woocommerce .button.change_payment_method,
+.woocommerce .button.wcs_deletion_error,
+.woocommerce a.button[href*="add-payment-method"] {
+  background-color: #FFC600 !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* 🤍 Hover-effekt för alla knappar */
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce .woocommerce-button:hover,
+.woocommerce .woocommerce-Button:hover,
+.woocommerce .wp-element-button:hover,
+.woocommerce .button.cancel:hover,
+.woocommerce .button.pay:hover,
+.woocommerce .button.view:hover,
+.woocommerce .button.change_payment_method:hover,
+.woocommerce .button.wcs_deletion_error:hover,
+.woocommerce a.button[href*="add-payment-method"]:hover {
+  background-color: #ffffff !important;
+  color: #FFC600 !important;
+  border: 1px solid #FFC600 !important;
+}
+
+/* 🛠 Spara ändringar – superspecifik targeting */
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account button.woocommerce-Button[name="save_account_details"] {
+  background-color: #FFC600 !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account button.woocommerce-Button[name="save_account_details"]:hover {
+  background-color: #ffffff !important;
+  color: #FFC600 !important;
+  border: 1px solid #FFC600 !important;
+}
+
+/* =================== */
+/* Länkar i Mitt konto */
+/* =================== */
+body.woocommerce-account .woocommerce-MyAccount-content a, 
+body.woocommerce-account .woocommerce-notices-wrapper a {
+  color: #FFC600 !important;
+  text-decoration: none !important;
+  transition: color 0.3s ease, text-decoration 0.3s ease !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content a:hover, 
+body.woocommerce-account .woocommerce-notices-wrapper a:hover {
+  text-decoration: underline !important;
+  color: #FFC600 !important;
+}
+
+/* Menylänkar i Mitt konto */
+body.woocommerce-account .woocommerce-MyAccount-navigation a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation a:hover {
+  text-decoration: underline !important;
+  color: inherit !important;
+}
+
+/* =================== */
+/* Stil för WooCommerce-betalbox */
+/* =================== */
+.woocommerce-PaymentBox {
+  background-color: #ffffff !important;
+  border: 2px solid #FFC600 !important;
+  border-radius: 5px !important;
+  padding: 20px !important;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.woocommerce-PaymentBox::before {
+  display: none !important;
+}
+
+/* =================== */
+/* Mitt konto – innehåll och formulär */
+/* =================== */
+body.woocommerce-account .woocommerce-MyAccount-content-wrapper {
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account {
+  background-color: #ffffff !important;
+  padding: 40px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #e6e2dd !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account .form-row {
+  margin-bottom: 20px !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account label {
+  display: block !important;
+  margin-bottom: 0.5em !important;
+  font-weight: bold !important;
+  color: #333333 !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account .input-text {
+  width: 100% !important;
+  padding: 12px 15px !important;
+  border: 1px solid rgba(255, 198, 0, 0.5) !important;
+  border-radius: 5px !important;
+  background-color: #ffffff !important;
+  font-size: 16px !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account .input-text:focus {
+  border: 1px solid #FFC600 !important;
+  background-color: rgba(255, 198, 0, 0.15) !important;
+  outline: none !important;
+  box-shadow: 0 0 5px rgba(255, 198, 0, 0.5) !important;
+}
+
+/* Redigera konto – knapp */
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account button {
+  background-color: #7c3a3d !important;
+  color: #ffffff !important;
+  padding: 12px 20px !important;
+  border: none !important;
+  border-radius: 5px !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-EditAccountForm.edit-account button:hover {
+  background-color: #5d2b2e !important;
+}
+
+/* Länkar i content wrapper */
+body.woocommerce-account .woocommerce-MyAccount-content-wrapper a {
+  color: #FFC600;
+  text-decoration: none !important;
+  transition: color 0.3s ease, text-decoration 0.3s ease !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content-wrapper a:hover {
+  color: #FFC600 !important;
+  text-decoration: underline !important;
+}
+
+/* =================== */
+/* Tabeller – Mitt konto, order, prenumerationer */
+/* =================== */
+.shop_table.shop_table_responsive.my_account_orders,
+.shop_table.order_details,
+.shop_table.subscription_details {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  border-spacing: 0;
+}
+
+.shop_table.shop_table_responsive.my_account_orders th,
+.shop_table.shop_table_responsive.my_account_orders td,
+.shop_table.order_details th,
+.shop_table.order_details td,
+.shop_table.subscription_details th,
+.shop_table.subscription_details td {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 15px !important;
+  padding-left: 10px !important;
+  text-align: left;
+}
+
+.shop_table.shop_table_responsive.my_account_orders tr,
+.shop_table.order_details tr,
+.shop_table.subscription_details tr {
+  padding-left: 10px !important;
+}
+
+.shop_table.shop_table_responsive.my_account_orders th,
+.shop_table.order_details th,
+.shop_table.subscription_details th {
+  color: #333;
+  font-weight: bold;
+}
+
+.shop_table.shop_table_responsive.my_account_orders tr:nth-child(even),
+.shop_table.order_details tr:nth-child(even),
+.shop_table.subscription_details tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.shop_table.shop_table_responsive.my_account_orders tr:hover,
+.shop_table.order_details tr:hover,
+.shop_table.subscription_details tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Dölj menyer i Mitt konto */
+.woocommerce-MyAccount-navigation-link--members-area,
+.woocommerce-MyAccount-navigation-link--downloads {
+  display: none !important;
+}
+
+/* =================== */
+/* Restriktionsruta (för ej inloggad medlem) */
+/* =================== */
+.woocommerce {
+  min-height: 70vh;
+  background-color: #FEF8F6;
+}
+
+.woocommerce-info.wc-memberships-restriction-message.wc-memberships-content-restricted-message::before {
+  content: none;
+  display: none;
+}
+
+.wc-memberships-restriction-message.wc-memberships-content-restricted-message {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9;
+  padding: 20px 30px;
+  border: 2px solid #F8CB51;
+  border-radius: 8px;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  z-index: 9999; 
+}
+
+/* =================== */
+/* Övriga element */
+/* =================== */
+.woocommerce-product-gallery__image img.zoomImg {
+  display: none !important;
+}
+.woocommerce-product-gallery__image {
+  cursor: default !important;
+}
+
+.woocommerce-form.woocommerce-form-login.login {
+  font-size: 16px;
+  color: #333;
+  margin: 20px auto;
+  background-color: #fff;
+}
+
+.elementor-widget-container h6 {
+  margin-bottom: 0.3em;
+}
+
+/* Rubriker i Mitt konto */
+body.woocommerce-account h1, 
+body.woocommerce-account h2, 
+body.woocommerce-account h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+body.woocommerce-account .wp-block-post-title {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  margin-top: 1rem;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content h2 {
+  font-size: 1.75rem;
+  margin-top: 5rem;
+}
+
+body.woocommerce-account .woocommerce-column__title {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+/* gratis 14 dagar */
+
+.free-trial-badge {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #000;
+  font-weight: 500;
+  padding: 8px 18px;
+  border: 1px solid #FFC600;
+  border-radius: 999px;
+  font-size: 14px;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(2px);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .free-trial-badge {
+    top: 12px;
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+}
+
+
+
+
+/* =======================================
+   Mool – Anpassning av Amelia Boka-knapp
+   ======================================= */
+
+/* Göm ALLA pris-element i Amelia */
+#amelia-container span.am-fcis__header-price,
+#amelia-container .am-fcis__header-text,
+#amelia-container .am-service-price,
+#amelia-container .am-fcis__price,
+#amelia-container .am-price,
+#amelia-container [class*="price"],
+#amelia-container [class*="amount"] {
+    display: none !important;
+}
+
+/* Själva Boka-knappen – matcha Elementor + tvinga höjd 50px */
+#amelia-container .am-fcis__header-action .am-button,
+#amelia-container .am-fcis__header-action .am-service-book-btn,
+#amelia-container .am-fc__btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background-color: #FFC600 !important;
+    color: #ffffff !important;
+
+    font-family: "Nunito", sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 2px !important;
+    word-spacing: 0 !important;
+    text-transform: none !important;
+
+    /* tvinga samma höjd som Elementor-knappen */
+    height: 50px !important;
+    padding: 0 30px !important;    /* bara vänster/höger, höjd styrs av height */
+    border-radius: 15px !important;
+    border: 1px solid transparent !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Innertext – se till att den inte försöker ändra något */
+#amelia-container .am-fcis__header-action .am-button span,
+#amelia-container .am-fcis__header-action .am-service-book-btn span,
+#amelia-container .am-fc__btn span,
+#amelia-container .am-button__inner {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 2px !important;
+    word-spacing: 0 !important;
+    text-transform: none !important;
+    text-decoration: none !important;
+}
+
+/* Hover – inverterad färg + gul ram */
+#amelia-container .am-fcis__header-action .am-button:hover,
+#amelia-container .am-fcis__header-action .am-service-book-btn:hover,
+#amelia-container .am-fc__btn:hover {
+    background-color: #ffffff !important;
+    color: #FFC600 !important;
+    border-color: #FFC600 !important;
+}
+
+/* Gör terapeuten/anställd tydligare i kundpanelen */
+.am-cc .am-cc_data-text {
+    color: rgba(86, 66, 61, 1) !important; /* Mool mörk text */
+    font-weight: 600 !important;           /* Samma vikt som andra labels */
+}
+.am-cc .am-icon-user {
+    color: rgba(86, 66, 61, 0.9) !important; /* Ikonen mörkare också */
+}
+
+.am-cc .am-cc_content .am-cc_content-inner .am-cc_data-text {
+    color: rgba(86, 66, 61, 1) !important; /* Mool mörk text */
+    font-weight: 600 !important;
+}
+
+.am-collapse-item .am-cc_data-text {
+    color: rgba(86, 66, 61, 1) !important;
+    font-weight: 600 !important;
+}
+
+/* --- Amelia kundpanel: gör terapeutens namn tydligare --- */
+#amelia-container span.am-cc__data-text {
+  color: rgba(86, 66, 61, 0.9) !important;   /* Mool-gul */
+  font-weight: 600 !important; /* lite fetare så det syns bättre */
+}
+
+/* Vänsterkolumn bakgrund (lite mörkare burgundy) */
+.amelia-v2-booking #am-body {
+    background-color: #3c0d17 !important;
+}
+
+/* Textfärg i vänsterspalten */
+.amelia-v2-booking #am-body,
+.amelia-v2-booking #am-body * {
+    color: #fff !important;
+}
+
+/* Aktiva steg - mer tydlighet */
+.amelia-v2-booking .am-step-active {
+    background-color: #ffc600 !important;
+    color: #3c0d17 !important;
+    border-radius: 8px;
+}
+
+/* Steg-ikoner */
+.amelia-v2-booking .am-step-icon {
+    color: #ffc600 !important;
+}
+
+
+/* --- 1. Vänstermenyn: starkare kontrast --- */
+.amelia-v2-booking .am-left-sidebar {
+    background-color: #4A0E28 !important; /* mörkare vinröd */
+}
+
+.amelia-v2-booking .am-left-sidebar * {
+    color: #ffffff !important;  /* vit text */
+    opacity: 1 !important;
+}
+
+/* Ikoner + text */
+.amelia-v2-booking .am-cc__sidebar-step,
+.amelia-v2-booking .am-cc__sidebar-step span,
+.amelia-v2-booking .am-cc__sidebar-step i {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Aktivt steg i sidomenyn */
+.amelia-v2-booking .am-cc__sidebar-step.am-active {
+    background-color: rgba(255, 198, 0, 0.25) !important; /* Mool-gul tonad */
+    border-left: 4px solid #FFC600 !important;
+}
+
+
+/* Behåll originalcellen neutral */
+.amelia-v2-booking .fc-daygrid-day {
+    background: none !important;
+}
+
+/* Applicera gul bakgrund på en wrapper INUTI cellen */
+.amelia-v2-booking .fc-daygrid-day:has(.fc-event) .fc-daygrid-day-frame {
+    background-color: rgba(255, 198, 0, 0.25) !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    margin: 4px !important;  /* Detta skapar avstånd mellan rutorna */
+    transition: 0.2s ease;
+}
+
+/* Hover */
+.amelia-v2-booking .fc-daygrid-day:has(.fc-event) .fc-daygrid-day-frame:hover {
+    background-color: rgba(255, 198, 0, 1) !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    margin: 4px !important;  /* Detta skapar avstånd mellan rutorna */
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+/* Texten i de dagarna ska synas tydligt */
+.amelia-v2-booking .fc-daygrid-day:has(.fc-event) .fc-daygrid-day-number {
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+
+/* Gör obokningsbara dagar ljusare */
+.amelia-v2-booking .fc-daygrid-day:not(:has(.fc-event)) {
+    opacity: 0.4;
+}
+
+/* --- 4. Stärk "Fortsätt"-knappen --- */
+.amelia-v2-booking .am-button-primary {
+    background-color: #FFC600 !important;
+    color: #4A0E28 !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+}
+
+/* --- Wrapper runt båda pilarna --- */
+.amelia-v2-booking .am-date-picker-navigation {
+    border: 2px solid #FFC600 !important;     /* Gul ram */
+    border-radius: 12px !important;           /* Samma form som innan */
+    padding: 0 !important;
+    display: flex;
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   Amelia dropdown (månad/år)
+   – vald rad = vit bakgrund, övriga får gul hover
+   ============================================================ */
+
+/* Vald rad (is-selected) – vit bakgrund */
+.am-select-popper .el-select-dropdown__item.is-selected {
+    background-color: #ffffff !important;   /* vit bg på vald månad/år */
+    color: #3a2a2a !important;
+    font-weight: 600 !important;
+}
+
+/* Hover på andra rader (inte den valda) – ljusgul */
+.am-select-popper .el-select-dropdown__item.is-hovering:not(.is-selected) {
+    background-color: rgba(255, 198, 0, 0.15) !important; /* mjuk gul */
+    color: #3a2a2a !important;
+}
+
+
+/* ============================================================
+   Amelia: datum-navigeringspilar
+   Behåll originalform – byt bara till Mool-gula färger
+   ============================================================ */
+
+/* Yttre kapseln – behåll form, byt bara färger */
+.amelia-v2-booking .am-advsc__header .am-button-group {
+    background: #ffffff !important;        /* vit bg */
+    border-color: #FFC600 !important;      /* gul ytterram */
+    border-radius: 6px !important;   
+}
+
+/* Dividern mellan pilarna – Amelia sätter border-left på andra knappen */
+.amelia-v2-booking .am-advsc__header
+.am-button-group .am-button.is-icon-only + .am-button.is-icon-only {
+    border-left-color: #FFC600 !important; /* gul mittlinje */
+}
+
+/* Pilarna (ikonerna) – gör dem gula */
+.amelia-v2-booking .am-advsc__header .am-icon-arrow-left,
+.amelia-v2-booking .am-advsc__header .am-icon-arrow-right {
+    color: #FFC600 !important;             /* gula pilar */
+}
+
+/* Liten, mjuk hover – utan att ändra formen */
+.amelia-v2-booking .am-advsc__header .am-button-group .am-button.is-icon-only:hover {
+    background-color: rgba(255, 198, 0, 0.08) !important;
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   Amelia – TILLBAKA-KNAPP
+   Matchar exakt designen på kalenderns pilar
+   (vit bakgrund, 6px radius, gul ram, gul ikon)
+   ============================================================ */
+
+/* Själva knappen (tillbaka) */
+.am-heading-prev.am-button.is-icon-only {
+    background-color: #ffffff !important;     /* vit bg */
+    border: 1px solid #FFC600 !important;      /* gul ram */
+    border-radius: 6px !important;             /* samma form som kalenderpilarna */
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Själva pil-ikonen */
+.am-heading-prev .am-icon-arrow-left {
+    color: #FFC600 !important;                 /* gul pil */
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+/* Hover – identiskt med kalenderpilarna */
+.am-heading-prev.am-button.is-icon-only:hover {
+    background-color: rgba(255, 198, 0, 0.08) !important;
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   AMELIA – Bekräftelse
+   Gör vänsteretiketter mörka + feta
+   Gör "Åtkomst till kundpanel" mörk
+   ============================================================ */
+
+/* Vänsterkolumnens etiketter: Datum:, Local Time:, Tjänst:, osv */
+.am-fs__congrats-info-customer div span:first-child {
+    color: #3a2a2a !important;      /* mörk text */
+    font-weight: 600 !important;    /* fet */
+}
+
+/* Högerkolumnens värden – se till att de också är tydligt mörka */
+.am-fs__congrats-info-customer div span:last-child {
+    color: #3a2a2a !important;
+}
+
+/* "Åtkomst till kundpanel" längst ner */
+.am-fs__main-footer-cp .am-button__inner {
+    color: #3a2a2a !important;      /* mörk text (inte vit) */
+    font-weight: 600 !important;
+    opacity: 1 !important;          /* ta bort urvattnad stil */
+}
+
+/* Hover på kundpanel-texten – lite mörkare */
+.am-fs__main-footer-cp .am-button__inner:hover {
+    color: #000000 !important;
+}

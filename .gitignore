@@ -1,0 +1,28 @@
+# WordPress uppladdningar – synkas aldrig via Git
+wp-content/uploads/
+
+# All-in-One WP Migration backups (kan vara gigabytes stora)
+wp-content/ai1wm-backups/
+
+# WordPress cache och temporärt
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup*/
+
+# Loggar och debug
+*.log
+debug.log
+
+# Miljöfiler
+.env
+.env.*
+
+# OS-filer
+.DS_Store
+Thumbs.db
+
+# Känslig WordPress-konfiguration (innehåller DB-uppgifter)
+wp-config.php
+
+# Testfiler – ska inte vara på servern, ta bort manuellt från Loopia också
+phpinfo*.php
