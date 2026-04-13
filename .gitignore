@@ -1,28 +1,51 @@
-# WordPress uppladdningar – synkas aldrig via Git
+# WordPress-kärna hanteras direkt på servern via WP-admin
+wp-admin/
+wp-includes/
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config.php
+wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+index.php
+license.txt
+readme.html
+
+# Plugins hanteras via WP-admin
+wp-content/plugins/
+
+# Uppladdningar – rör aldrig dessa
 wp-content/uploads/
 
-# All-in-One WP Migration backups (kan vara gigabytes stora)
-wp-content/ai1wm-backups/
-
-# WordPress cache och temporärt
+# Cache och temporärt
 wp-content/cache/
 wp-content/upgrade/
 wp-content/backup*/
+wp-content/ai1wm-backups/
 
-# Loggar och debug
-*.log
-debug.log
-
-# Miljöfiler
+# Känslig konfiguration
 .env
 .env.*
+
+# Loggar
+*.log
 
 # OS-filer
 .DS_Store
 Thumbs.db
 
-# Känslig WordPress-konfiguration (innehåller DB-uppgifter)
-wp-config.php
-
-# Testfiler – ska inte vara på servern, ta bort manuellt från Loopia också
+# Övriga WordPress-rotfiler
+.htaccess
+.wpinstall/
+.well-known/
+google*.html
+fetch-from-loopia.sh
 phpinfo*.php

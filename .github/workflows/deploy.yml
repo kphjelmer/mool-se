@@ -7,36 +7,30 @@ on:
 
 jobs:
   deploy:
-    name: FTP Deploy
+    name: SFTP Deploy
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2  # Needed for change detection
 
-      - name: Deploy via FTP to Loopia
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ftpcluster.loopia.se
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          local-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            **/node_modules/**
-            **/.env
-            **/.env.*
-            **/wp-content/uploads/**
-            **/wp-content/cache/**
-            **/wp-content/upgrade/**
-            **/wp-content/backup*/**
-            **/*.log
-            **/.DS_Store
-            **/Thumbs.db
-            **/phpinfo*.php
-            **/debug*.log
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
+      - name: Deploy child theme via SFTP
+        env:
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -c "
+          set sftp:auto-confirm yes
+          set net:timeout 30
+          set net:max-retries 3
+          open sftp://ninakp:$FTP_PASSWORD@ftpcluster.loopia.se
+          mirror \
+            --reverse \
+            --delete \
+            --verbose \
+            wp-content/themes/twentytwentyfour-child/ \
+            /public_html/wp-content/themes/twentytwentyfour-child/
+          bye
+          "
