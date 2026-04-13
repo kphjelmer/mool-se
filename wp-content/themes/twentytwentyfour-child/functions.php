@@ -95,10 +95,11 @@ add_action('send_headers', function () {
 
 /* ============================================================
    Fix för dubbla titlar / title-tag
+   Yoast SEO hanterar <title> – ta bort WordPress standardutskrift
    ============================================================ */
-add_action('after_setup_theme', function () {
-    add_theme_support('title-tag');
-});
+add_action('wp_head', function () {
+    remove_action('wp_head', '_wp_render_title_tag', 1);
+}, 0);
 
 
 
