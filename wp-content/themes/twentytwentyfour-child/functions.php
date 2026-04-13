@@ -95,11 +95,20 @@ add_action('send_headers', function () {
 
 /* ============================================================
    Fix för dubbla titlar / title-tag
-   Yoast SEO hanterar <title> – ta bort WordPress standardutskrift
+   Buffrar hela sidan och tar bort eventuell extra <title>-tagg
    ============================================================ */
-add_action('init', function () {
-    remove_action('wp_head', '_wp_render_title_tag', 1);
-});
+add_action('template_redirect', function () {
+    ob_start(function ($html) {
+        preg_match_all('/<title[^>]*>.*?<\/title>/is', $html, $matches);
+        if (count($matches[0]) > 1) {
+            // Ta bort alla utom den sista (Yoast skriver sist)
+            for ($i = 0; $i < count($matches[0]) - 1; $i++) {
+                $html = preg_replace('/' . preg_quote($matches[0][$i], '/') . '/', '', $html, 1);
+            }
+        }
+        return $html;
+    });
+}, 0);
 
 
 
