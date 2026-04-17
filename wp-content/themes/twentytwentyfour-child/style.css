@@ -1148,3 +1148,24 @@ body.woocommerce-account .woocommerce-column__title {
 .am-fs__main-footer-cp .am-button__inner:hover {
     color: #000000 !important;
 }
+/* Elementor formulär – Skicka-knapp matchar övriga knappar */
+.elementor-form .elementor-button[type="submit"] {
+  background-color: #FFC600 !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: "Nunito Sans", sans-serif !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.elementor-form .elementor-button[type="submit"]:hover {
+  background-color: #ffffff !important;
+  color: #FFC600 !important;
+  border: 1px solid #FFC600 !important;
+}
