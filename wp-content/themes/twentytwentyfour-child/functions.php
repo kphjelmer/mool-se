@@ -268,6 +268,17 @@ add_action('woocommerce_thankyou', function ($order_id) {
 }, 6);
 
 
+// Google Ads konvertering på /tack/-sidan
+add_action('wp_head', function () {
+    if (is_page('tack')) {
+        ?>
+        <script>
+          gtag('event', 'conversion', {'send_to': 'AW-1045557188/TX2SCPiusYgZEMTfx_ID'});
+        </script>
+        <?php
+    }
+});
+
 // Google Ads conversion tracking på tacksidan
 add_action('woocommerce_thankyou', function ($order_id) {
     if (!$order_id) return;
