@@ -369,11 +369,14 @@ add_action('wp_enqueue_scripts', function () {
 
 
 // Preload hero-bilder per sida – förbättrar LCP och Google Ads Quality Score
-// Lägg till fler sidor: 'sid-id' => 'https://mool.se/wp-content/uploads/...'
+// Lägg till fler sidor: sid-id => 'URL'
 add_action('wp_head', function () {
     $hero_images = [
-        8741  => 'FYLL-I-URL-LIFEKIT.webp',   // LifeKit (onlineyoga)
-        10174 => 'FYLL-I-URL-TERAPI.webp',    // Terapi & Samtal
+        9433  => 'https://mool.se/wp-content/uploads/2025/05/Online-puff.webp',                          // LifeKit (yoga online)
+        10174 => 'https://mool.se/wp-content/uploads/2025/09/nina_augustsson-1024x1024.webp',            // Terapi & Samtal
+        5285  => 'https://mool.se/wp-content/uploads/2024/12/me-time-2025-nocap-kvadrat-1024x1024.webp', // Yoga för utbrända
+        3456  => 'https://mool.se/wp-content/uploads/2024/08/Prova-pa-ht2024.webp',                      // Yogaklasser
+        9251  => 'https://mool.se/wp-content/uploads/2025/05/Online-puff.webp',                          // Retreats & popups
     ];
 
     $page_id = get_the_ID();
