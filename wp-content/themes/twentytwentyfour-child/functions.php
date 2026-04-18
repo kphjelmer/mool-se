@@ -368,21 +368,18 @@ add_action('wp_enqueue_scripts', function () {
 
 
 
-// Preload hero-bilder för LifeKit-sidan
-function mool_preload_lifekit_hero() {
-    if (is_page(8741)) {
-        echo '<link rel="preload" as="image" href="https://mool.se/...ebp" type="image/webp" media="(min-width: 768px)">' . "\n";
-        echo '<link rel="preload" as="image" href="https://mool.se/..." media="(max-width: 767px)" fetchpriority="high">' . "\n";
-    }
-}
-add_action('wp_head', 'mool_preload_lifekit_hero', 0);
-
-
-// Preload hero-bilder för Terapi-sidan
-
+// Preload hero-bilder per sida – förbättrar LCP och Google Ads Quality Score
+// Lägg till fler sidor: 'sid-id' => 'https://mool.se/wp-content/uploads/...'
 add_action('wp_head', function () {
-    if (is_page(10174)) { // Terapi & Samtal
-        echo '<link rel="preload" as="image" href="HERO-URL-HÄR" type="image/webp" fetchpriority="high">' . "\n";
+    $hero_images = [
+        8741  => 'FYLL-I-URL-LIFEKIT.webp',   // LifeKit (onlineyoga)
+        10174 => 'FYLL-I-URL-TERAPI.webp',    // Terapi & Samtal
+    ];
+
+    $page_id = get_the_ID();
+    if (isset($hero_images[$page_id])) {
+        $url = esc_url($hero_images[$page_id]);
+        echo '<link rel="preload" as="image" href="' . $url . '" type="image/webp" fetchpriority="high">' . "\n";
     }
 }, 0);
 
