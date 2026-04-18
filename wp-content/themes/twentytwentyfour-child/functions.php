@@ -76,9 +76,14 @@ add_action('wp_enqueue_scripts', function () {
         wp_dequeue_script('wc-stripe-upe');
         wp_dequeue_script('wc-stripe-blocks-integration');
 
-        // Woo styles/scripts (om du vill vara aggressiv med cache)
+        // Woo styles/scripts
         wp_dequeue_script('woocommerce');
         wp_dequeue_script('wc-add-to-cart');
+        wp_dequeue_script('wc-blockui');
+        wp_dequeue_script('js-cookie');
+        wp_dequeue_script('woocommerce-order-attribution');
+        wp_dequeue_script('sourcebuster');
+        wp_dequeue_script('comment-reply');
         wp_dequeue_style('woocommerce-general');
         wp_dequeue_style('woocommerce-layout');
         wp_dequeue_style('woocommerce-smallscreen');
