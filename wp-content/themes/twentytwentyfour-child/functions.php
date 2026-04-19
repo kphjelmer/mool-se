@@ -232,6 +232,20 @@ add_action('wp_enqueue_scripts', function () {
     );
 }, 30);
 
+/**
+ * Mikrokonverteringar – engaged_session, deep_scroll, cta_click_boka_tid, email_click
+ * Skickar events till GA4 (via GTM) och Google Ads.
+ */
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script(
+        'mool-micro-conversions',
+        get_stylesheet_directory_uri() . '/js/micro-conversions.js',
+        array(),
+        '1.0.0',
+        true  // laddas i footer – GTM och gtag() finns redan då
+    );
+}, 30);
+
 
 
 // Visar olika info på orderbekräftelsen beroende på om kunden är ny eller återkommande
