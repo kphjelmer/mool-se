@@ -8,7 +8,9 @@
  * Google-tagg på sajten definierar gtag(), så vakten "typeof gtag" gjorde att
  * alla fyra events tystnade utan felmeddelande.
  *
- * Events: mool_engaged_session, mool_deep_scroll, mool_cta_boka_tid, mool_email_klick
+ * Events: engaged_session, deep_scroll, cta_click_boka_tid, email_click
+ * Namnen matchar de GA4-händelser som Google Ads redan importerar som
+ * konverteringsåtgärder. Byt dem inte utan att byta i GA4 och Ads också.
  */
 (function () {
   'use strict';
@@ -35,7 +37,7 @@
 
   var page = window.location.pathname;
 
-  // ── 1. mool_engaged_session ─────────────────────────────────────────────
+  // ── 1. engaged_session ─────────────────────────────────────────────
   // Triggas när besökaren varit ≥60 sek på sidan OCH scrollat förbi 100vh.
   // Max 1 gång per session.
   (function () {
@@ -50,7 +52,7 @@
       if (fired || !timeOk || !scrollOk) return;
       fired = true;
       flag.set();
-      sendEvent('mool_engaged_session', { page_path: page });
+      sendEvent('engaged_session', { page_path: page });
     }
 
     setTimeout(function () {
@@ -72,7 +74,7 @@
     }, { passive: true });
   })();
 
-  // ── 2. mool_deep_scroll ─────────────────────────────────────────────────
+  // ── 2. deep_scroll ─────────────────────────────────────────────────
   // Triggas när besökaren scrollat till 80% av sidans totala höjd.
   // Max 1 gång per session.
   (function () {
@@ -93,7 +95,7 @@
         if (scrolled >= docHeight * 0.8) {
           fired = true;
           flag.set();
-          sendEvent('mool_deep_scroll', { page_path: page });
+          sendEvent('deep_scroll', { page_path: page });
           window.removeEventListener('scroll', onScroll);
         }
       });
@@ -102,7 +104,7 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
 
-  // ── 3. mool_cta_boka_tid ────────────────────────────────────────────────
+  // ── 3. cta_click_boka_tid ────────────────────────────────────────────────
   // Triggas vid klick på "Boka tid"-knappar och bokningslänkar.
   // Textmatchningen är avsiktligt tolerant: knapptexten på sajten varierar
   // ("Boka tid", "Boka din tid", "BOKA TID NU").
@@ -120,12 +122,12 @@
         href.indexOf('boka-formular') !== -1;
 
       if (isBokaBtn) {
-        sendEvent('mool_cta_boka_tid', { page_path: page, link_text: text.slice(0, 80) });
+        sendEvent('cta_click_boka_tid', { page_path: page, link_text: text.slice(0, 80) });
       }
     });
   })();
 
-  // ── 4. mool_email_klick ─────────────────────────────────────────────────
+  // ── 4. email_click ─────────────────────────────────────────────────
   // Triggas vid klick på mailto-länk för Mools e-postadresser.
   (function () {
     var moolEmails = ['nina@mool.se', 'kp@mool.se', 'wow@mool.se'];
@@ -141,7 +143,7 @@
         .trim();
 
       if (moolEmails.indexOf(email) !== -1) {
-        sendEvent('mool_email_klick', { email_address: email, page_path: page });
+        sendEvent('email_click', { email_address: email, page_path: page });
       }
     });
   })();

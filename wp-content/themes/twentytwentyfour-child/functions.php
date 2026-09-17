@@ -287,7 +287,7 @@ add_action('woocommerce_thankyou', function ($order_id) {
 }, 6);
 
 
-// Konvertering på /tack/-sidan: pushas till dataLayer, GTM avgör vad som skickas vidare.
+// Konvertering på /tack/-sidan: pushar GA4-eventet generate_lead till dataLayer.
 // OBS: inline gtag() fungerar inte här. Autoptimize deferrar all inline-JS och ingen
 // Google-tagg definierar gtag() på sajten, så anropet kastade ReferenceError.
 add_action('wp_body_open', function () {
@@ -297,7 +297,7 @@ add_action('wp_body_open', function () {
     ?>
     <script>
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'mool_tack_visning', page_path: '<?php echo esc_js(add_query_arg(array())); ?>' });
+      window.dataLayer.push({ event: 'generate_lead', page_path: '<?php echo esc_js(add_query_arg(array())); ?>' });
     </script>
     <?php
 }, 20);
@@ -329,18 +329,24 @@ add_action('woocommerce_thankyou', function ($order_id) {
         );
     }
 
+    // GA4:s ecommerce-format, så att GA4-taggen i GTM kan läsa datalagret direkt.
+    // Eventnamnet måste vara exakt "purchase": Google Ads importerar GA4-händelsen
+    // "Mool (web) purchase" och matchar på namnet.
     $payload = array(
-        'event'          => 'mool_purchase',
-        'transaction_id' => (string) $order->get_order_number(),
-        'value'          => (float) $order->get_total(),
-        'currency'       => $order->get_currency() ?: 'SEK',
-        'tax'            => (float) $order->get_total_tax(),
-        'new_customer'   => wc_get_customer_order_count($order->get_customer_id()) === 1,
-        'items'          => $items,
+        'event'        => 'purchase',
+        'new_customer' => wc_get_customer_order_count($order->get_customer_id()) === 1,
+        'ecommerce'    => array(
+            'transaction_id' => (string) $order->get_order_number(),
+            'value'          => (float) $order->get_total(),
+            'tax'            => (float) $order->get_total_tax(),
+            'currency'       => $order->get_currency() ?: 'SEK',
+            'items'          => $items,
+        ),
     );
     ?>
     <script>
       window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ ecommerce: null });
       window.dataLayer.push(<?php echo wp_json_encode($payload); ?>);
     </script>
     <?php
