@@ -8,7 +8,8 @@
  * Google-tagg på sajten definierar gtag(), så vakten "typeof gtag" gjorde att
  * alla fyra events tystnade utan felmeddelande.
  *
- * Events: engaged_session, deep_scroll, cta_click_boka_tid, email_click, form_submit
+ * Events: engaged_session, deep_scroll, cta_click_boka_tid, email_click,
+ *         elementor_form_success
  * Namnen matchar de GA4-händelser som Google Ads redan importerar som
  * konverteringsåtgärder. Byt dem inte utan att byta i GA4 och Ads också.
  */
@@ -148,12 +149,14 @@
     });
   })();
 
-  // ── 5. form_submit ──────────────────────────────────────────────────────
+  // ── 5. elementor_form_success ───────────────────────────────────────────
   // Elementor Pro skickar formulär via AJAX. Skickar formuläret till en tacksida
   // fångas det av tacksidemätningen i functions.php, men visar det bara ett
   // inline-meddelande sker ingen sidladdning och då är detta enda signalen.
-  // Håll "Mool (web) form_submit" SEKUNDÄR i Ads så att en förfrågan som både
-  // ger submit_success och en tacksida inte räknas två gånger.
+  // Heter medvetet NÅGOT ANNAT än form_submit: tacksidorna äger den konverteringen.
+  // Det här är en diagnos-signal. Blir elementor_form_success märkbart vanligare än
+  // form_submit i GA4 betyder det att något formulär visar ett inline-meddelande i
+  // stället för att skicka vidare till en tacksida, och då missas den konverteringen.
   (function () {
     function bind($) {
       $(document).on('submit_success', function (e) {
@@ -162,7 +165,7 @@
           var el = form && form.querySelector('input[name="' + name + '"]');
           return el ? el.value : '';
         };
-        sendEvent('form_submit', {
+        sendEvent('elementor_form_success', {
           page_path: page,
           form_id:   read('form_id'),
           form_name: read('form_name'),

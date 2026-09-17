@@ -241,7 +241,7 @@ add_action('wp_enqueue_scripts', function () {
         'mool-micro-conversions',
         get_stylesheet_directory_uri() . '/js/micro-conversions.js',
         array(),
-        '1.2.0',
+        '1.3.0',
         true  // laddas i footer, pushar till dataLayer (kräver inte gtag)
     );
 }, 30);
@@ -292,10 +292,15 @@ add_action('woocommerce_thankyou', function ($order_id) {
 // OBS: inline gtag() fungerar inte här. Autoptimize deferrar all inline-JS och ingen
 // Google-tagg definierar gtag() på sajten, så anropet kastade ReferenceError.
 add_action('wp_body_open', function () {
+    // Eventnamnet är form_submit och inte generate_lead av ett praktiskt skäl:
+    // form_submit är redan markerad som viktig händelse i GA4 OCH redan importerad
+    // till Google Ads som "Mool (web) form_submit". Ett nytt namn hade krävt att
+    // GA4 först upptäcker händelsen, vilket tar upp till ett dygn, och därefter en
+    // ny import i Ads. form_source skiljer sidorna åt i rapporterna.
     $tacksidor = array(
-        'tack'            => 'generate_lead', // allmänna kontaktformuläret
-        'se-tack'         => 'generate_lead', // Somatic Experiencing i Växjö
-        'tack-nyhetsbrev' => 'sign_up',       // nyhetsbrevet, lägre värde än en förfrågan
+        'tack'            => 'form_submit', // allmänna kontaktformuläret
+        'se-tack'         => 'form_submit', // Somatic Experiencing i Växjö
+        'tack-nyhetsbrev' => 'sign_up',     // nyhetsbrevet, lägre värde än en förfrågan
     );
 
     foreach ($tacksidor as $slug => $event) {
