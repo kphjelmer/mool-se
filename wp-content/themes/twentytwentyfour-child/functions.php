@@ -241,8 +241,8 @@ add_action('wp_enqueue_scripts', function () {
         'mool-micro-conversions',
         get_stylesheet_directory_uri() . '/js/micro-conversions.js',
         array(),
-        '1.0.0',
-        true  // laddas i footer – GTM och gtag() finns redan då
+        '1.1.0',
+        true  // laddas i footer, pushar till dataLayer (kräver inte gtag)
     );
 }, 30);
 
@@ -287,32 +287,61 @@ add_action('woocommerce_thankyou', function ($order_id) {
 }, 6);
 
 
-// Google Ads konvertering på /tack/-sidan
-add_action('wp_head', function () {
-    if (is_page('tack')) {
-        ?>
-        <script>
-          gtag('event', 'conversion', {'send_to': 'AW-1045557188/TX2SCPiusYgZEMTfx_ID'});
-        </script>
-        <?php
+// Konvertering på /tack/-sidan: pushas till dataLayer, GTM avgör vad som skickas vidare.
+// OBS: inline gtag() fungerar inte här. Autoptimize deferrar all inline-JS och ingen
+// Google-tagg definierar gtag() på sajten, så anropet kastade ReferenceError.
+add_action('wp_body_open', function () {
+    if (!is_page('tack')) {
+        return;
     }
-});
-
-// Google Ads conversion tracking på tacksidan
-add_action('woocommerce_thankyou', function ($order_id) {
-    if (!$order_id) return;
-    $order = wc_get_order($order_id);
-    if (!$order) return;
-
-    $total = $order->get_total();
     ?>
     <script>
-      gtag('event', 'conversion', {
-          'send_to': 'AW-1045557188/74vJCMvi_LgaEMTfx_ID',
-          'value': <?php echo (float) $total; ?>,
-          'currency': 'SEK',
-          'transaction_id': '<?php echo esc_js($order->get_order_number()); ?>'
-      });
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'mool_tack_visning', page_path: '<?php echo esc_js(add_query_arg(array())); ?>' });
+    </script>
+    <?php
+}, 20);
+
+// Köpkonvertering på WooCommerce-tacksidan.
+// Pushas till dataLayer med ordervärde, valuta och ordernummer. Ordernumret gör att
+// GTM/Ads kan deduplicera om sidan laddas om, vilket den gamla koden inte klarade.
+add_action('woocommerce_thankyou', function ($order_id) {
+    if (!$order_id) {
+        return;
+    }
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        return;
+    }
+
+    // Ingen serverside-spärr mot omladdning: dedupliceringen sköts av ordernumret
+    // (transaction_id) i Ads och GA4. En spärr här skulle tysta konverteringen för
+    // gott om något går fel på klientsidan vid första renderingen.
+
+    $items = array();
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+        $items[] = array(
+            'item_id'   => $product ? $product->get_sku() ?: (string) $product->get_id() : '',
+            'item_name' => $item->get_name(),
+            'quantity'  => (int) $item->get_quantity(),
+            'price'     => (float) $order->get_line_subtotal($item, false, false),
+        );
+    }
+
+    $payload = array(
+        'event'          => 'mool_purchase',
+        'transaction_id' => (string) $order->get_order_number(),
+        'value'          => (float) $order->get_total(),
+        'currency'       => $order->get_currency() ?: 'SEK',
+        'tax'            => (float) $order->get_total_tax(),
+        'new_customer'   => wc_get_customer_order_count($order->get_customer_id()) === 1,
+        'items'          => $items,
+    );
+    ?>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(<?php echo wp_json_encode($payload); ?>);
     </script>
     <?php
 }, 20);

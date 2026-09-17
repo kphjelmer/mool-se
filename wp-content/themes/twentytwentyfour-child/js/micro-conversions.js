@@ -1,48 +1,41 @@
 /**
  * Mool – mikrokonverteringar
- * Skickar events till GA4 (via GTM) och Google Ads.
  *
- * Google Ads conversion-labels: fyll i AW_LABELS när du skapat
- * conversion actions i Google Ads-gränssnittet.
+ * Pushar events till dataLayer. GTM avgör vad som skickas vidare till GA4 och
+ * Google Ads, och konverteringslabels bor i GTM – inte här.
+ *
+ * Tidigare version anropade gtag() direkt. Det fungerade aldrig: ingen
+ * Google-tagg på sajten definierar gtag(), så vakten "typeof gtag" gjorde att
+ * alla fyra events tystnade utan felmeddelande.
+ *
+ * Events: mool_engaged_session, mool_deep_scroll, mool_cta_boka_tid, mool_email_klick
  */
 (function () {
   'use strict';
 
-  // ── Konfiguration ────────────────────────────────────────────────────────
-  var AW_ID = 'AW-1045557188';
-
-  // Fyll i labels efter att ha skapat conversion actions i Google Ads.
-  // Tom sträng = bara GA4-event skickas (Google Ads hoppas över).
-  var AW_LABELS = {
-    engaged_session:    '',
-    deep_scroll:        '',
-    cta_click_boka_tid: '',
-    email_click:        '',
-  };
-
-  // ── Hjälpfunktioner ──────────────────────────────────────────────────────
   function sendEvent(name, params) {
-    if (typeof gtag !== 'function') return;
-
-    // GA4
-    gtag('event', name, params || {});
-
-    // Google Ads (om label är ifylld)
-    if (AW_LABELS[name]) {
-      gtag('event', 'conversion', { send_to: AW_ID + '/' + AW_LABELS[name] });
+    window.dataLayer = window.dataLayer || [];
+    var payload = { event: name };
+    if (params) {
+      Object.keys(params).forEach(function (k) { payload[k] = params[k]; });
     }
+    window.dataLayer.push(payload);
   }
 
   function sessionFlag(key) {
     return {
-      isSet: function () { return sessionStorage.getItem(key) === '1'; },
-      set:   function () { sessionStorage.setItem(key, '1'); },
+      isSet: function () {
+        try { return sessionStorage.getItem(key) === '1'; } catch (e) { return false; }
+      },
+      set: function () {
+        try { sessionStorage.setItem(key, '1'); } catch (e) {}
+      },
     };
   }
 
   var page = window.location.pathname;
 
-  // ── 1. engaged_session ──────────────────────────────────────────────────
+  // ── 1. mool_engaged_session ─────────────────────────────────────────────
   // Triggas när besökaren varit ≥60 sek på sidan OCH scrollat förbi 100vh.
   // Max 1 gång per session.
   (function () {
@@ -57,7 +50,7 @@
       if (fired || !timeOk || !scrollOk) return;
       fired = true;
       flag.set();
-      sendEvent('engaged_session', { page: page });
+      sendEvent('mool_engaged_session', { page_path: page });
     }
 
     setTimeout(function () {
@@ -79,7 +72,7 @@
     }, { passive: true });
   })();
 
-  // ── 2. deep_scroll ──────────────────────────────────────────────────────
+  // ── 2. mool_deep_scroll ─────────────────────────────────────────────────
   // Triggas när besökaren scrollat till 80% av sidans totala höjd.
   // Max 1 gång per session.
   (function () {
@@ -100,7 +93,7 @@
         if (scrolled >= docHeight * 0.8) {
           fired = true;
           flag.set();
-          sendEvent('deep_scroll', { page: page });
+          sendEvent('mool_deep_scroll', { page_path: page });
           window.removeEventListener('scroll', onScroll);
         }
       });
@@ -109,34 +102,36 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
 
-  // ── 3. cta_click_boka_tid ───────────────────────────────────────────────
+  // ── 3. mool_cta_boka_tid ────────────────────────────────────────────────
   // Triggas vid klick på "Boka tid"-knappar och bokningslänkar.
+  // Textmatchningen är avsiktligt tolerant: knapptexten på sajten varierar
+  // ("Boka tid", "Boka din tid", "BOKA TID NU").
   (function () {
     document.addEventListener('click', function (e) {
-      var el = e.target.closest('a, button');
+      var el = e.target.closest ? e.target.closest('a, button') : null;
       if (!el) return;
 
       var text = (el.textContent || '').trim().toLowerCase();
       var href = (el.getAttribute('href') || '').toLowerCase();
 
       var isBokaBtn =
-        text === 'boka tid' ||
-        href.includes('boka-tid') ||
-        href.includes('boka-formular');
+        text.indexOf('boka') === 0 ||
+        href.indexOf('boka-tid') !== -1 ||
+        href.indexOf('boka-formular') !== -1;
 
       if (isBokaBtn) {
-        sendEvent('cta_click_boka_tid', { page: page });
+        sendEvent('mool_cta_boka_tid', { page_path: page, link_text: text.slice(0, 80) });
       }
     });
   })();
 
-  // ── 4. email_click ──────────────────────────────────────────────────────
+  // ── 4. mool_email_klick ─────────────────────────────────────────────────
   // Triggas vid klick på mailto-länk för Mools e-postadresser.
   (function () {
     var moolEmails = ['nina@mool.se', 'kp@mool.se', 'wow@mool.se'];
 
     document.addEventListener('click', function (e) {
-      var el = e.target.closest('a[href^="mailto:"]');
+      var el = e.target.closest ? e.target.closest('a[href^="mailto:"]') : null;
       if (!el) return;
 
       var email = (el.getAttribute('href') || '')
@@ -146,7 +141,7 @@
         .trim();
 
       if (moolEmails.indexOf(email) !== -1) {
-        sendEvent('email_click', { email_address: email, page: page });
+        sendEvent('mool_email_klick', { email_address: email, page_path: page });
       }
     });
   })();
