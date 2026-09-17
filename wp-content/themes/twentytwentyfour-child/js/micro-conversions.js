@@ -8,7 +8,7 @@
  * Google-tagg på sajten definierar gtag(), så vakten "typeof gtag" gjorde att
  * alla fyra events tystnade utan felmeddelande.
  *
- * Events: engaged_session, deep_scroll, cta_click_boka_tid, email_click
+ * Events: engaged_session, deep_scroll, cta_click_boka_tid, email_click, form_submit
  * Namnen matchar de GA4-händelser som Google Ads redan importerar som
  * konverteringsåtgärder. Byt dem inte utan att byta i GA4 och Ads också.
  */
@@ -146,6 +146,38 @@
         sendEvent('email_click', { email_address: email, page_path: page });
       }
     });
+  })();
+
+  // ── 5. form_submit ──────────────────────────────────────────────────────
+  // Elementor Pro skickar formulär via AJAX. Skickar formuläret till en tacksida
+  // fångas det av tacksidemätningen i functions.php, men visar det bara ett
+  // inline-meddelande sker ingen sidladdning och då är detta enda signalen.
+  // Håll "Mool (web) form_submit" SEKUNDÄR i Ads så att en förfrågan som både
+  // ger submit_success och en tacksida inte räknas två gånger.
+  (function () {
+    function bind($) {
+      $(document).on('submit_success', function (e) {
+        var form = e.target && e.target.closest ? e.target.closest('form') : null;
+        var read = function (name) {
+          var el = form && form.querySelector('input[name="' + name + '"]');
+          return el ? el.value : '';
+        };
+        sendEvent('form_submit', {
+          page_path: page,
+          form_id:   read('form_id'),
+          form_name: read('form_name'),
+        });
+      });
+    }
+
+    if (window.jQuery) { bind(window.jQuery); return; }
+
+    // Elementor laddar jQuery i footern, vänta in den men inte för evigt.
+    var tries = 0;
+    var timer = setInterval(function () {
+      if (window.jQuery) { clearInterval(timer); bind(window.jQuery); }
+      else if (++tries > 40) { clearInterval(timer); }
+    }, 250);
   })();
 
 })();

@@ -241,7 +241,7 @@ add_action('wp_enqueue_scripts', function () {
         'mool-micro-conversions',
         get_stylesheet_directory_uri() . '/js/micro-conversions.js',
         array(),
-        '1.1.0',
+        '1.2.0',
         true  // laddas i footer, pushar till dataLayer (kräver inte gtag)
     );
 }, 30);
@@ -287,19 +287,34 @@ add_action('woocommerce_thankyou', function ($order_id) {
 }, 6);
 
 
-// Konvertering på /tack/-sidan: pushar GA4-eventet generate_lead till dataLayer.
+// Konverteringar på tacksidorna. Varje formulär på sajten skickar till sin egen
+// tacksida, så mätningen måste täcka alla tre och inte bara /tack/.
 // OBS: inline gtag() fungerar inte här. Autoptimize deferrar all inline-JS och ingen
 // Google-tagg definierar gtag() på sajten, så anropet kastade ReferenceError.
 add_action('wp_body_open', function () {
-    if (!is_page('tack')) {
-        return;
+    $tacksidor = array(
+        'tack'            => 'generate_lead', // allmänna kontaktformuläret
+        'se-tack'         => 'generate_lead', // Somatic Experiencing i Växjö
+        'tack-nyhetsbrev' => 'sign_up',       // nyhetsbrevet, lägre värde än en förfrågan
+    );
+
+    foreach ($tacksidor as $slug => $event) {
+        if (!is_page($slug)) {
+            continue;
+        }
+        $payload = array(
+            'event'       => $event,
+            'form_source' => $slug,
+            'page_path'   => add_query_arg(array()),
+        );
+        ?>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push(<?php echo wp_json_encode($payload); ?>);
+        </script>
+        <?php
+        break;
     }
-    ?>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'generate_lead', page_path: '<?php echo esc_js(add_query_arg(array())); ?>' });
-    </script>
-    <?php
 }, 20);
 
 // Köpkonvertering på WooCommerce-tacksidan.
