@@ -28,6 +28,8 @@ add_filter('rest_endpoints', function ($endpoints) {
  * 2. ?author=1 avslöjar samma sak: WordPress omdirigerar till /author/<slug>/
  *    och slugen ÄR användarnamnet. Författararkiven används inte på Mool.
  */
+// Prioritet 0: WordPress egen redirect_canonical ligger på 10 och hinner annars
+// före, och dess Location-huvud avslöjar slugen (alltså användarnamnet).
 add_action('template_redirect', function () {
     if (is_admin() || is_user_logged_in()) {
         return;
@@ -37,7 +39,7 @@ add_action('template_redirect', function () {
         wp_safe_redirect(home_url('/'), 301);
         exit;
     }
-});
+}, 0);
 
 /**
  * 3. oEmbed-svaret innehåller författarens namn och adress.
